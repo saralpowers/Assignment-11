@@ -1,16 +1,16 @@
 // IMPORT THE MODULE
-//import empData from '../js/modules/init.js';
+import hello from '../js/modules/init.js';
 
 // CREATE AN ARRAY OF EMPLOYEES
-let arrEmployees = [
-    [34123413, "Zak Ruvalcaba", 3424, "zak@vectacorp.com", "Executive"],
-    [23424665, "Sally Smith", 2344, "sally@vectacorp.com", "Administrative"],
-    [12341244, "Mark Martin", 5352, "mark@vectacorp.com", "Sales"],
-    [14545423, "Robin Banks", 7867, "robin@vectacorp.com", "Marketing"],
-    [13413453, "Sue Wedge", 1235, "sue@vectacorp.com", "QA"]
-];
+// let arrEmployees = [
+//     [34123413, "Zak Ruvalcaba", 3424, "zak@vectacorp.com", "Executive"],
+//     [23424665, "Sally Smith", 2344, "sally@vectacorp.com", "Administrative"],
+//     [12341244, "Mark Martin", 5352, "mark@vectacorp.com", "Sales"],
+//     [14545423, "Robin Banks", 7867, "robin@vectacorp.com", "Marketing"],
+//     [13413453, "Sue Wedge", 1235, "sue@vectacorp.com", "QA"]
+// ];
 
-//convert array to object in this form: [{"object":{"property_1":"value_1","property_2":"value_2"}}]
+//convert array to json object in this form: [{"object":{"property_1":"value_1","property_2":"value_2"}}] to be copied into file from console
 // function arrayToJson(arrEmployees) {
 //     let obj, i, j, key, value;
 //     let jsonArr = [];
@@ -51,24 +51,22 @@ empTable.addEventListener('click', (e) => {
     }
 });
 
-
-
-
 // BUILD THE EMPLOYEES GRID
 function buildGrid() {
     // REMOVE THE EXISTING SET OF ROWS BY REMOVING THE ENTIRE TBODY SECTION
     empTable.lastElementChild.remove();
     // REBUILD THE TBODY FROM SCRATCH
     let tbody = document.createElement('tbody');
-    let newEmployees = [];
+    //let newEmployees = [];
+    console.log("hi");
 
-    //let employees = await fetchData();
-        
-    fetch("../data/employees.json") //creates a promise object
-    .then( response => response.json() )
-    .then( data => {
-        console.log(data);
-            for (let employee of data.employees) {
+    async function fetchEmployees() {
+        try {
+            const response = await fetch("../data/employees.json");
+            console.log(response);
+            const employees = await response.json();
+            console.log(employees);
+            for (let employee of employees.employees) {
                 tbody.innerHTML += 
                 `
                 <tr>
@@ -83,10 +81,12 @@ function buildGrid() {
             // BIND THE TBODY TO THE EMPLOYEE TABLE
             empTable.appendChild(tbody);
             // UPDATE EMPLOYEE COUNT
-            empCount.value = `(${newEmployees.length})`;
+            empCount.value = `(${employees.employees.length})`;
             }
-        })
-        .catch( error => console.log(error.message) );
-
+        } catch (error) {
+            console.error(error);
+        }
+    }
+    fetchEmployees();
 };
 

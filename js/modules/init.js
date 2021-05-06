@@ -1,16 +1,14 @@
 
-const DUMMY = "../modules/init.js";
+    async function fetchEmployees() {
+        try {
+            const response = await fetch("../data/employees.json");
+            console.log(response);
+        } catch (error) {
+            console.error(error);
+        }
+    }
+    fetchEmployees();
 
-// Use async/await to be able to return a variable out from the promise
-const employees = async () => {
-    const raw = await fetch(DUMMY);
-    const json_data = await raw.json();
-    const empObj = (json_data);
-    
-    return empObj;
-};
 
-export { employees };
+export default {fetchEmployees};
 
-// EXPORT THE FUNCTION
-//export default {loadData};
