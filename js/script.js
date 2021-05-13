@@ -1,5 +1,5 @@
-// IMPORT THE MODULE
-import hello from '../js/modules/init.js';
+//IMPORT THE MODULE
+import employeeList from '../js/modules/init.js';
 
 // CREATE AN ARRAY OF EMPLOYEES
 // let arrEmployees = [
@@ -58,17 +58,18 @@ function buildGrid() {
     // REBUILD THE TBODY FROM SCRATCH
     let tbody = document.createElement('tbody');
     //let newEmployees = [];
-    console.log("hi");
+    //console.log("hi");
 
-    async function fetchEmployees() {
-        try {
-            const response = await fetch("../data/employees.json");
-            console.log(response);
-            const employees = await response.json();
-            console.log(employees);
+    let response = employeeList.fetchEmployees(employees);
+    //console.log(response);
+
+    response
+        .then(response => response.json())
+        .then(employees => {
+            //console.log(employees);
             for (let employee of employees.employees) {
                 tbody.innerHTML += 
-                `
+                    `
                 <tr>
                     <td>${employee.empNum}</td>
                     <td>${employee.empName}</td>
@@ -83,10 +84,7 @@ function buildGrid() {
             // UPDATE EMPLOYEE COUNT
             empCount.value = `(${employees.employees.length})`;
             }
-        } catch (error) {
-            console.error(error);
-        }
-    }
-    fetchEmployees();
-};
+        })
+    ;
+}
 
